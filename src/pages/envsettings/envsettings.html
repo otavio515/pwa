@@ -1,0 +1,97 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ envName }} Settings</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4>
+        <ion-item>
+          <ion-label>Devices</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>TV</ion-label>
+          <ion-toggle color="secondary" checked></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Home Theater</ion-label>
+          <ion-toggle color="secondary"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Playstation</ion-label>
+          <ion-toggle color="secondary" checked></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Sound System</ion-label>
+          <ion-toggle color="secondary" checked></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Modem</ion-label>
+          <ion-toggle color="secondary" checked></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Lamp</ion-label>
+          <ion-toggle color="secondary"></ion-toggle>
+        </ion-item>
+      </ion-col>
+      <ion-col col-8>
+        <ion-item>
+          <ion-label>Camera</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <br>
+    <ion-row>
+      <ion-col col-lg-6>
+        <div class="card">
+          <header class="title">
+            <h2 class="main-title">
+              <ion-icon name="flash" item-start></ion-icon> Consumo de Energia
+            </h2>
+          </header>
+          <canvas baseChart
+            [chartType]="barChartType"
+            [options]="barChartOptions"
+            [labels]="barChartLabels"
+            [legend]="barChartLegend"
+            [colors]="energyBarChartColors"
+            [datasets]="energyBarChartData"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </ion-col>
+      <ion-col col-lg-6>
+        <div class="card">
+          <header class="title">
+            <h2 class="main-title">
+              <ion-icon name="water" item-start></ion-icon> Consumo de Água
+            </h2>
+          </header>
+          <canvas baseChart
+            [chartType]="barChartType"
+            [options]="barChartOptions"
+            [labels]="barChartLabels"
+            [legend]="barChartLegend"
+            [colors]="waterBarChartColors"
+            [datasets]="waterBarChartData"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4></ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

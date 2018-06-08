@@ -1,0 +1,20 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding text-center>
+  <form [formGroup]="_login" (ngSubmit)="doLogin()">
+    <ion-item>
+      <ion-input formControlName="email" placeholder="E-mail" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="password" placeholder="Password" type="password"></ion-input>
+    </ion-item>
+    <button ion-button block type="submit">ENTRAR</button>
+  </form>
+</ion-content>
