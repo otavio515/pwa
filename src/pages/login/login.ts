@@ -1,69 +1,94 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { HomePage } from '../home/home';
+import { IonicPage, NavController, MenuController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { User } from '../../models/users';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LocalStorageServiceProvider } from '../../providers/local-storage-service/local-storage-service';
+import { AssetsService } from '../../providers/assets-firebase/assets.service';
 
-//@IonicPage()
+@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
 
-  private _login: FormGroup;
-  private _token: string;
+  login: FormGroup;
+  notFound: boolean = false;
+  isLoading: boolean = false;
 
-  constructor(public navCtrl: NavController
-    , private _formBuilder: FormBuilder
-    , private _userService: UserServiceProvider
-    , private _localStorage: LocalStorageServiceProvider
+  constructor(public navCtrl: NavController,
+    private formBuilder: FormBuilder,
+    private userService: UserServiceProvider,
+    private localStorage: LocalStorageServiceProvider,
+    private menuCtrl: MenuController,
+    private assetsService: AssetsService
   ) {
-    this._login = this._formBuilder.group({
-      email: ['otavio@gmail.com', Validators.compose([Validators.required, Validators.email])],
-      password: ['123', Validators.required]
+    this.login = this.formBuilder.group({
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.required]
     });
-
-    this._token = this._localStorage.getToken();
   }
 
   ionViewDidEnter() {
-    //this.isValidToken();
+    this.userService.currentUser = {email: '', id: 0, token: '', image: ''};
+    this.menuCtrl.enable(false, "menu");
+    this.isValidToken();
+  }
+
+  async isValidToken() {
+    let isValid: boolean = false;
+    if (this.localStorage.getToken()) {
+      isValid = await this.userService.isTokenValid();
+    }
+
+    if (isValid) {
+      this.navCtrl.setRoot('HomePage');
+    }
   }
 
   doLogin() {
-    this._userService
+    this.isLoading = true;
+    this.userService
       .connect(this.email, this.password)
       .subscribe(
         (user: User) => {
-          this.goHome();
-          this._localStorage.setToken(user.token);
+          this.userService.connectWithFirebase(this.email, this.password)
+            .then((auth: any) => {
+              this.assetsService.getImage(user.id)
+                .then((url: string) => {
+                  user.image = url;
+                  this.redirect(user);
+                })
+                .catch((error) => {
+                  this.redirect(user);
+                  this.isLoading = false;
+                })
+            })
+            .catch((error) => {
+              this.notFound = true;
+              this.isLoading = false;
+            })
         },
         (error) => {
-          console.log(error)
+          this.notFound = true;
+          this.isLoading = false;
         }
       );
   }
 
-  private goHome(): void {
-    this.navCtrl.setRoot(HomePage.name);
+  private redirect(user: User): void {
+    this.userService.currentUser = user;
+    this.localStorage.setToken(user.token);
+    this.localStorage.setImageProfile(user.image);
+    this.navCtrl.setRoot('HomePage');
   }
 
   get email(): string {
-    return this._login.value['email'];
+    return this.login.value['email'];
   }
 
   get password(): string {
-    return this._login.value['password'];
-  }
-
-  get token(): string {
-    return this._token;
-  }
-
-  set token(token: string) {
-    this._token = token;
+    return this.login.value['password'];
   }
 }

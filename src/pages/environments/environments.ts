@@ -1,3 +1,4 @@
+import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { EnvsettingsPage } from '../envsettings/envsettings';
@@ -10,12 +11,17 @@ import { EnvsettingsPage } from '../envsettings/envsettings';
 export class EnvironmentsPage {
 
   constructor(
-    public navCtrl: NavController
-) { }
+    public navCtrl: NavController,
+    public userService: UserServiceProvider
+  ) { }
+
+  ionViewCanEnter() {
+    return this.userService.isTokenValid();
+  }
 
   navigate(environment: number) {
     let env: string;
-    switch(environment) {
+    switch (environment) {
       case 1:
         env = 'Livingroom';
         break;

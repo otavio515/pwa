@@ -1,3 +1,4 @@
+import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {
@@ -29,11 +30,16 @@ export class EnvsettingsPage {
 
 
   constructor(
-    public navCtrl: NavController
-    , public navParams: NavParams
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public userService: UserServiceProvider
   ) {
     this.envName = this.navParams.get('environment');
     console.log(this.envName);
+  }
+
+  ionViewCanEnter() {
+    return this.userService.isTokenValid();
   }
 
   // events

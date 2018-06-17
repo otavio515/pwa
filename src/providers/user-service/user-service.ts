@@ -1,43 +1,67 @@
+import { App } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
+import { JwtHelper } from "angular2-jwt";
+
+import { LocalStorageServiceProvider } from './../local-storage-service/local-storage-service';
 import { User } from '../../models/users';
-import { ApiServiceProvider } from '../api-service/api-service';
+import { API } from './../../utils/api.util';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/retry';
 
+import * as firebase from 'firebase';
+
 @Injectable()
 export class UserServiceProvider {
 
-  private _api: string
-  private _isAuthenticated: boolean = false;
+  private jwtHelper: JwtHelper = new JwtHelper();
+  private user: User;
 
-  constructor(private _http: HttpClient
-    , private _apiService: ApiServiceProvider
-  ) {
-      this._api = this._apiService.url;
-  }
+  constructor(
+    private http: HttpClient,
+    private localStorage: LocalStorageServiceProvider
+  ) { }
 
   connect(email, password) {
-    return this._http.post<User>(`${this._api}authentication`, { email, password })
-      .do((authentication) => this.isLogged = true);
+    return this.http.post<User>(`${API.URL}authentication`, { email, password });
   }
 
-  isTokenValid(token) {
-    return this._http.post<boolean>(`${this._api}authenticationtoken`, {token})
-    .toPromise()
-    .then(value => {
-      this.isLogged = value['valid'];
-    })
-    .catch(e => e);
+  connectWithFirebase(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  }
+
+  isTokenValid(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.get<any>(`${API.URL}authenticationtoken`)
+      .toPromise()
+      .then((value: any) => {
+        if (value.valid) {
+          this.decodeToken();
+          resolve(true)
+        } else {
+          reject(false);
+        }
+      })
+      .catch((err) => reject(false));
+    });
+  }
+
+  private decodeToken(): void {
+    if (!this.localStorage.getToken()) {
+      return;
     }
 
-  get isLogged(): boolean {
-    return this._isAuthenticated;
+    let decodedToken = this.jwtHelper.decodeToken(this.localStorage.getToken());
+    this.user = {email: decodedToken.email, id: decodedToken.id, token: '', image: this.localStorage.getImageProfile()};
   }
 
-  set isLogged(auhentication: boolean) {
-    this._isAuthenticated = auhentication;
+  get currentUser(): User {
+    return this.user;
+  }
+
+  set currentUser(user: User) {
+    this.user = user;
   }
 
 }

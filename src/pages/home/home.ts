@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular'
+import { IonicPage, MenuController, NavController, App } from 'ionic-angular'
+import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 @IonicPage()
 @Component({
@@ -9,6 +10,19 @@ import { IonicPage } from 'ionic-angular'
 
 export class HomePage {
 
-  constructor() {  }
+  constructor(
+    public navCtrl: NavController,
+    public menuCtrl: MenuController,
+    public userService: UserServiceProvider,
+    public app: App
+  ) {  }
+
+  ionViewCanEnter(){
+    return this.userService.isTokenValid();
+  }
+
+  ionViewDidEnter(){
+    this.menuCtrl.enable(true, "menu");
+  }
 
 }

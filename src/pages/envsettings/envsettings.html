@@ -1,9 +1,5 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>{{ envName }} Settings</ion-title>
-  </ion-navbar>
-
+  <custom-header [title]="envName + 'Settings'"></custom-header>
 </ion-header>
 
 <ion-content padding>
@@ -54,15 +50,8 @@
               <ion-icon name="flash" item-start></ion-icon> Consumo de Energia
             </h2>
           </header>
-          <canvas baseChart
-            [chartType]="barChartType"
-            [options]="barChartOptions"
-            [labels]="barChartLabels"
-            [legend]="barChartLegend"
-            [colors]="energyBarChartColors"
-            [datasets]="energyBarChartData"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)">
+          <canvas baseChart [chartType]="barChartType" [options]="barChartOptions" [labels]="barChartLabels" [legend]="barChartLegend"
+            [colors]="energyBarChartColors" [datasets]="energyBarChartData" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
           </canvas>
         </div>
       </ion-col>
@@ -73,15 +62,8 @@
               <ion-icon name="water" item-start></ion-icon> Consumo de Água
             </h2>
           </header>
-          <canvas baseChart
-            [chartType]="barChartType"
-            [options]="barChartOptions"
-            [labels]="barChartLabels"
-            [legend]="barChartLegend"
-            [colors]="waterBarChartColors"
-            [datasets]="waterBarChartData"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)">
+          <canvas baseChart [chartType]="barChartType" [options]="barChartOptions" [labels]="barChartLabels" [legend]="barChartLegend"
+            [colors]="waterBarChartColors" [datasets]="waterBarChartData" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
           </canvas>
         </div>
       </ion-col>

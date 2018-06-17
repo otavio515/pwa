@@ -1,60 +1,24 @@
 <ion-header>
-
-	<ion-navbar>
-		<ion-title>Estatísticas</ion-title>
-	</ion-navbar>
-
+  <custom-header [title]="'Estatísticas'"></custom-header>
 </ion-header>
 
 <ion-content padding>
-	<div padding>
-		<ion-grid>
-			<ion-row>
-				<ion-col col-lg-6>
-					<div class="card">
-						<header class="title">
-							<h2 class="main-title">
-								<ion-icon name="flash" item-start></ion-icon> Consumo de Energia
-							</h2>
-						</header>
-						<canvas baseChart
-							[chartType]="barChartType"
-							[options]="barChartOptions"
-							[labels]="barChartLabels"
-							[legend]="barChartLegend"
-							[colors]="energyBarChartColors"
-							[datasets]="energyBarChartData"
-							(chartHover)="chartHovered($event)"
-							(chartClick)="chartClicked($event)">
-						</canvas>
-					</div>
-				</ion-col>
-				<ion-col col-lg-6>
-					<div class="card">
-						<header class="title">
-							<h2 class="main-title">
-								<ion-icon name="water" item-start></ion-icon> Consumo de Água
-							</h2>
-						</header>
-						<canvas baseChart
-							[chartType]="barChartType"
-							[options]="barChartOptions"
-							[labels]="barChartLabels"
-							[legend]="barChartLegend"
-							[colors]="waterBarChartColors"
-							[datasets]="waterBarChartData"
-							(chartHover)="chartHovered($event)"
-							(chartClick)="chartClicked($event)">
-						</canvas>
-					</div>
-				</ion-col>
-			</ion-row>
-		</ion-grid>
-	</div>
-	<ion-item col-lg-4>
-		<ion-label>Ano</ion-label>
-		<ion-select>
-			<ion-option>2018</ion-option>
-		</ion-select>
-	</ion-item>
+  <div padding>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-lg-6>
+          <chart [chart]="energyChart" [icon]="'flash'"></chart>
+        </ion-col>
+        <ion-col col-lg-6>
+          <chart [chart]="waterChart" [icon]="'water'"></chart>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-item col-lg-4>
+    <ion-label>Ano</ion-label>
+    <ion-select [(ngModel)]="year" (ionChange)="doFilter()">
+      <ion-option *ngFor="let y of years" [value]="y">{{y}}</ion-option>
+    </ion-select>
+  </ion-item>
 </ion-content>

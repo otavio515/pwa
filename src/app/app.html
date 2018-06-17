@@ -1,28 +1,4 @@
-<ion-split-pane>
-  <ion-menu [content]="conteudo" *ngIf="isAuthenticated">
-    <ion-content>
-      <ion-item>
-        <div>
-          <ion-avatar item-start>
-            <img src="./assets/imgs/user.png">
-          </ion-avatar>
-        </div>
-        <p> # - Administrator </p>
-        <h2>  </h2>
-      </ion-item>
-
-      <ion-list>
-        <button ion-item *ngFor="let page of pages" (click)="navigate(page.component)">
-
-          <ion-icon [name]="page.icon" item-left></ion-icon>
-          {{ page.title }}
-        </button>
-        <button ion-item color="danger" (click)="logout()">Logout</button>
-        <button ion-item menuClose>
-          <ion-icon item-left></ion-icon>
-        </button>
-      </ion-list>
-    </ion-content>
-  </ion-menu>
-  <ion-nav [root]="rootPage" main #conteudo swipeBackEnabled="false"></ion-nav>
-</ion-split-pane>
+<ion-menu id="menu" [content]="conteudo">
+    <user-menu></user-menu>
+</ion-menu>
+<ion-nav [root]="rootPage" #conteudo swipeBackEnabled="false"></ion-nav>

@@ -8,7 +8,7 @@ export class LocalStorageServiceProvider {
   getToken(): string {
     let token = localStorage.getItem('token');
 
-    if (token === null || token === undefined) {
+    if (!token) {
       console.log('Token nulo ou indefinido');
       return "";
     }
@@ -17,12 +17,30 @@ export class LocalStorageServiceProvider {
   }
 
   setToken(token: string) {
-    if (token === "" || token === null || token === undefined) {
+    if (!token) {
       console.log('Token vazio, nulo ou indefinido');
       return false;
     }
 
     localStorage.setItem('token', token);
+  }
+
+  getImageProfile(): string {
+    let imageUrl = localStorage.getItem('image');
+
+    if (!imageUrl) {
+      return "";
+    }
+
+    return imageUrl;
+  }
+
+  setImageProfile(imageUrl: string): void {
+    if (!imageUrl) {
+      return;
+    }
+
+    localStorage.setItem('image', imageUrl);
   }
 
 }

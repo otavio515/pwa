@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
@@ -11,26 +12,31 @@ import 'rxjs/add/operator/do';
 
 // ---------------- > Pages < ---------------- //
 import { MyApp } from './app.component';
-import { LoginPage } from '../pages/login/login';
-import { HomePage } from '../pages/home/home';
 
 // ---------------- > Services < ---------------- //
 import { UserServiceProvider } from '../providers/user-service/user-service';
-import { ApiServiceProvider } from '../providers/api-service/api-service';
 import { LocalStorageServiceProvider } from '../providers/local-storage-service/local-storage-service';
+import { StatisticsService } from '../providers/statistics-service/statistics.service';
 
 // ---------------- > Else < ---------------- //
+import { AuthInterceptorProvider } from './../interceptors/auth.interceptor';
+import { ComponentsModule } from './../components/components.module';
 import { ChartsModule } from 'ng2-charts';
+import { FeedBackService } from '../providers/feedback/feedback.service';
+import { AssetsService } from '../providers/assets-firebase/assets.service';
+
 
 @NgModule({
   declarations: [
-    MyApp,
-    LoginPage
+    MyApp
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp),
+    ComponentsModule,
+    IonicModule.forRoot(MyApp, {
+      mode: 'md'
+    }),
     IonicStorageModule.forRoot({
       name: 'smarthome',
       storeName: 'smarthomedb',
@@ -41,14 +47,17 @@ import { ChartsModule } from 'ng2-charts';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    LoginPage
+    MyApp
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler},
-    ApiServiceProvider,
     UserServiceProvider,
-    LocalStorageServiceProvider
+    LocalStorageServiceProvider,
+    AuthInterceptorProvider,
+    StatisticsService,
+    ScreenOrientation,
+    FeedBackService,
+    AssetsService
   ]
 })
 

@@ -1,0 +1,10 @@
+<ion-content>
+  <user-info></user-info>
+  <ion-list>
+    <button ion-item menuClose *ngFor="let page of pages" (click)="navigate(page.component)">
+      <ion-icon [name]="page.icon" item-left></ion-icon>
+      {{ page.title }}
+    </button>
+    <button ion-item menuClose color="danger" (click)="logout()">Logout</button>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,17 @@
+<ion-item>
+  <ion-avatar item-center>
+    <img [src]="userService?.currentUser?.image || './assets/imgs/user.png'">
+    <ion-fab top right>
+      <button type="button" #imageBtn ion-fab mini (click)="isUpload ? removeImage() : showFileChooser()">
+        <ion-icon name="camera"></ion-icon>
+      </button>
+      <ion-fab-list>
+        <button ion-fab (click)="uploadImage()">
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
+      </ion-fab-list>
+    </ion-fab>
+  </ion-avatar>
+  <input #input type="file" accept="image/*" (change)="inputImage($event)">
+  <p text-center> {{userService?.currentUser?.email}} </p>
+</ion-item>

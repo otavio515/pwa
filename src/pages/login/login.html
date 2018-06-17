@@ -1,20 +1,19 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>Login</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
 <ion-content padding text-center>
-  <form [formGroup]="_login" (ngSubmit)="doLogin()">
+  <ion-item no-lines>
+    <ion-icon name="home" item-left></ion-icon>
+    <h2>Smart House</h2>
+  </ion-item>
+  <form [formGroup]="login" (ngSubmit)="doLogin(); $event.preventDefault()">
     <ion-item>
       <ion-input formControlName="email" placeholder="E-mail" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-input formControlName="password" placeholder="Password" type="password"></ion-input>
     </ion-item>
-    <button ion-button block type="submit">ENTRAR</button>
+    <p class="danger" *ngIf="notFound">Usuário ou senha incorretos</p>
+    <button ion-button block type="submit" *ngIf="!isLoading; else load">ENTRAR</button>
+    <ng-template #load>
+      <ion-spinner></ion-spinner>
+    </ng-template>
   </form>
 </ion-content>

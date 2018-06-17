@@ -1,0 +1,17 @@
+<div class="card">
+    <header class="title">
+      <h2 class="main-title">
+        <ion-icon [name]="icon" item-start></ion-icon> {{chart?.getDescription()}}
+      </h2>
+    </header>
+    <canvas baseChart
+      [chartType]="chart?.getBarChartType()"
+      [options]="chart?.getBarChartOptions()"
+      [labels]="chart?.getBarChartLabels()"
+      [legend]="chart?.getBarChartLegend()"
+      [colors]="chart?.getBarChartColors()"
+      [datasets]="chart?.getBarChartData()"
+      (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)">
+    </canvas>
+</div>
